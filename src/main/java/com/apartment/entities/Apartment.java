@@ -31,6 +31,12 @@ public class Apartment {
 	
 	@Column
 	private int apartment_noOfFloor;
+
+	@Override
+	public String toString() {
+		return "Apartment [apartment_Id=" + apartment_Id + ", apartment_Name=" + apartment_Name + ", apartment_bhkType="
+				+ apartment_bhkType + ", apartment_noOfFloor=" + apartment_noOfFloor + "]";
+	}
 	
 
 }
