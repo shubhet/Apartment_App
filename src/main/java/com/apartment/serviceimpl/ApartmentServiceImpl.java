@@ -28,12 +28,15 @@ public class ApartmentServiceImpl implements ApartmentService {
 
 	@Override
 	public Apartment updateApartment(Apartment apartment, Integer apartmentId) {
-
-		Apartment apartmentById = apartmentRepository.findById(apartmentId).orElseThrow();
-		apartmentById.setApartment_Name(apartment.getApartment_Name());
-		apartmentById.setApartment_bhkType(apartment.getApartment_bhkType());
-		apartmentById.setApartment_noOfFloor(apartment.getApartment_noOfFloor());
-		Apartment updatedApartment = apartmentRepository.save(apartmentById);
+		Optional<Apartment> apartmentById = this.apartmentRepository.findById(apartmentId);
+		if (apartmentById.isEmpty()) {
+			throw new ApartmentNotFountException();
+		}
+		Apartment fetchedApartment = apartmentById.get();
+		fetchedApartment.setApartment_Name(apartment.getApartment_Name());
+		fetchedApartment.setApartment_bhkType(apartment.getApartment_bhkType());
+		fetchedApartment.setApartment_noOfFloor(apartment.getApartment_noOfFloor());
+		Apartment updatedApartment = apartmentRepository.save(fetchedApartment);
 		log.info("Updated Apartments details " + updatedApartment);
 		return updatedApartment;
 
@@ -52,7 +55,6 @@ public class ApartmentServiceImpl implements ApartmentService {
 		if (apartmentById.isEmpty()) {
 			throw new ApartmentNotFountException();
 		}
-
 		log.info("Deleted Apartments details " + apartmentById.get());
 		apartmentRepository.delete(apartmentById.get());
 	}
